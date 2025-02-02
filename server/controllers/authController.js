@@ -195,11 +195,11 @@ const verifyEmail = async (req, res) => {
             return res.json({ success: true, message: "account had already been verified" })
         }
 
-        if (user.verifyOtp = "" || otp != user.verifyOtp) {
+        if (user.verifyOtp = "" || otp !== user.verifyOtp) {
             return res.json({ success: false, message: "OTP may b invalid, please try again" })
         }
 
-        if (user.isAccountVerified < Date.now()) {
+        if (user.verifyOtpExpiredAt < Date.now()) {
             return res.json({ success: false, message: "OTP has expired" })
         }
 
@@ -209,11 +209,19 @@ const verifyEmail = async (req, res) => {
 
         await user.save()
 
-        return res.json({ success: false, message: "Account verified successfully" })
+        return res.json({ success: true, message: "Account verified successfully" })
 
     } catch (error) {
         return res.json({ success: false, message: error.message })
     }
 }
 
-export { register, login, logout, sendVerifyOtp, verifyEmail}
+const isAuthenticated = (req, res) => {
+    try {
+        return res.json({success: true, message: "user is authenticated"})
+    } catch (error) {
+        return res.json({success: false, message: error.message})
+    }
+}
+
+export { register, login, logout, sendVerifyOtp, verifyEmail, isAuthenticated}
