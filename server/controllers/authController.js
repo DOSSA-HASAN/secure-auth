@@ -139,12 +139,13 @@ const logout = (req, res) => {
 const sendVerifyOtp = async (req, res) => {
     const { userId } = req.body
 
-    try {
-        if (!userId) {
-            return res.json({ success: false, message: "missing user id" })
-        }
+    if (!userId) {
+        return res.json({ success: false, message: "missing user id" })
+    }
 
-        const user = userModel.findById(userId)
+    try {
+
+        const user = await userModel.findById(userId)
 
         if (!user) {
             return res.json({ success: false, message: "sorry could not send an otp, account was not found" })
@@ -176,4 +177,43 @@ const sendVerifyOtp = async (req, res) => {
     }
 }
 
-export { register, login, logout }
+const verifyEmail = async (req, res) => {
+    const { userId, otp } = req.body
+
+    if (!userId) {
+        return res.json({ success: false, message: "user id is needed for verification" })
+    }
+
+    try {
+        const user = await userModel.findById(userId)
+
+        if (!user) {
+            return res.json({ success: false, message: "user was not found" })
+        }
+
+        if (user.isAccountVerified) {
+            return res.json({ success: true, message: "account had already been verified" })
+        }
+
+        if (user.verifyOtp = "" || otp != user.verifyOtp) {
+            return res.json({ success: false, message: "OTP may b invalid, please try again" })
+        }
+
+        if (user.isAccountVerified < Date.now()) {
+            return res.json({ success: false, message: "OTP has expired" })
+        }
+
+        user.isAccountVerified = true
+        user.verifyOtp = ""
+        user.verifyOtpExpiredAt = 0
+
+        await user.save()
+
+        return res.json({ success: false, message: "Account verified successfully" })
+
+    } catch (error) {
+        return res.json({ success: false, message: error.message })
+    }
+}
+
+export { register, login, logout, sendVerifyOtp, verifyEmail}
