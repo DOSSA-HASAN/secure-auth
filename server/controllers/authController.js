@@ -39,7 +39,7 @@ const register = async (req, res) => {
             process.env.SECRET_KEY,
             { expiresIn: '7d' }
         )
-        
+
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
             to: user.email,
@@ -47,8 +47,8 @@ const register = async (req, res) => {
             text: `Hey there ${name}, your account has been successfully created with the email id: ${email}`
         }
 
-        await transporter.sendMail(mailOptions).catch((err) => { console.log(err.message)})
-        
+        await transporter.sendMail(mailOptions).catch((err) => { console.log(err.message) })
+
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -133,6 +133,46 @@ const logout = (req, res) => {
         return res.json({ success: true, message: "user logged out successfully" })
     } catch (error) {
         return res.json({ success: false, message: "Sorry an error occured, could not log you out" })
+    }
+}
+
+const sendVerifyOtp = async (req, res) => {
+    const { userId } = req.body
+
+    try {
+        if (!userId) {
+            return res.json({ success: false, message: "missing user id" })
+        }
+
+        const user = userModel.findById(userId)
+
+        if (!user) {
+            return res.json({ success: false, message: "sorry could not send an otp, account was not found" })
+        }
+        if (user.isAccountVerified) {
+            return res.json({ success: false, message: "account has already been verified" })
+        }
+
+        const otp = String(Math.floor(10000 + Math.random() * 90000))
+
+        user.verifyOtp = otp;
+        //otp expires after one day
+        user.verifyOtpExpiredAt = Date.now() + (24 * 60 * 60 * 1000)
+        await user.save()
+
+        //send mail
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: user.email,
+            subject: "Account Verification OTP",
+            text: `Your verification OTP is ${otp}. Kindly verify your account using this OTP`
+        }
+
+        await transporter.sendMail(mailOptions)
+
+        return res.json({ success: true, message: "otp has been set successfully" })
+    } catch (error) {
+        return res.json({ success: false, message: error.message })
     }
 }
 
