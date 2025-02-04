@@ -7,8 +7,8 @@ passport.use(
     new GoogleStrategy(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.envGOOGLE_SECRET_ID,
-            callbackURL: '/auth/google/callback'
+            clientSecret: process.env.GOOGLE_SECRET_ID,
+            callbackURL: "/google/callback"
         },
 
         async (accessToken, refreshToken, profile, done) => {
@@ -18,15 +18,15 @@ passport.use(
                 if (!user) {
                     const newUser = new userModel({
                         name: profile.displayName,
+                        googleId: profile.id,
+                        email: profile.emails[0].values,
                         password: '',
-                        email: profile.emails[0].value,
-                        isAccountVerified: true,
-                        googleId: profile.id
+                        isAccountVerified: true
                     })
-                    user = await newUser.save()
+                    const user = await newUser.save()
                 }
 
-                done(user, null)
+                done(null, user)
 
             } catch (error) {
                 done(error, null)
@@ -41,10 +41,8 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
     try {
-
         const user = await userModel.findById(id)
-        done(user, null)
-
+        done(null, user)
     } catch (error) {
         done(error, null)
     }

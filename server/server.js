@@ -6,6 +6,7 @@ import connectDB from "./config/mongodb.js"
 import authRoute from "./routes/authRoutes.js"
 import session from "express-session"
 import passport from "passport"
+import "./config/passport.js"
 
 const app = express()
 const port = process.env.PORT || 5000
