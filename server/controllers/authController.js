@@ -90,13 +90,19 @@ const login = async (req, res) => {
             return res.status(401).json({ success: false, message: "invalid credentials" })
         }
 
-        const token = jwt.sign(
+        const accessToken = jwt.sign(
             { id: user._id },
             process.env.SECRET_KEY,
-            { expiresIn: '7d' }
+            { expiresIn: '15m' }
         )
 
-        res.cookie('token', token, {
+        const refreshToken = jwt.sign(
+            { id: user._id},
+            process.env.REFRESH_SECRET,
+            { expiresIn: '7d'}
+        )
+
+        res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
@@ -106,6 +112,7 @@ const login = async (req, res) => {
         res.status(200).json({
             success: true,
             message: "logged in succesfully",
+            accessToken,
             user: { id: user._id, email: user.email, name: user.name }
         })
 
@@ -124,7 +131,7 @@ const logout = (req, res) => {
         if (!req?.cookies?.token) {
             return res.status(401).json({ success: false, message: "no user was logged in" })
         }
-        res.clearCookie("token", {
+        res.clearCookie("refreshToken", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: process.env.NODE_ENV === "production" ? "strict" : "none",
