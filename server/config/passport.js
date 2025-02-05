@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import userModel from "../models/userModel";
+import userModel from "../models/userModel.js";
 import "dotenv/config"
 
 passport.use(
@@ -23,13 +23,13 @@ passport.use(
                         password: '',
                         isAccountVerified: true
                     })
-                    const user = await newUser.save()
+                    user = await newUser.save()
                 }
 
-                done(null, user)
+                return done(null, user)
 
             } catch (error) {
-                done(error, null)
+                return done(error, null)
             }
         }
     )
