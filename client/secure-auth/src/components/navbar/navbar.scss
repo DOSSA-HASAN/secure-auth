@@ -1,0 +1,141 @@
+@import "../../responsive.scss";
+
+.navigation-bar {
+    @include flexBetween;
+    padding: 20px;
+
+    .logo-cont {
+        @include flexCenter;
+
+        img {
+            width: 60px;
+        }
+
+        h1 {
+            font-weight: 500;
+            margin-left: 10px;
+        }
+    }
+
+    .links-cont {
+        @include flexCenter;
+        position: relative;
+
+
+        @include md {
+            display: none;
+        }
+
+        a {
+            color: #000;
+            text-decoration: none;
+            margin: 15px;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 10px 25px;
+
+            &.register-btn {
+                color: #651FFF;
+                background-color: #D1C4E9;
+                border-radius: 20px;
+                transition: all 0.1s ease-in-out;
+
+                &:hover {
+                    background-color: hsl(261, 14%, 60%, 0.5);
+                }
+            }
+        }
+
+        .account-setting {
+            border-left: 1px solid #0000008a;
+            padding: 0 15px;
+            position: relative;
+            width: 100px;
+            height: 30px;
+            transition: all 0.3s ease-in-out;
+
+            &.display-setting {
+                width: 250px;
+                height: 300px;
+                position: absolute;
+            }
+
+            i {
+                color: #0000008a;
+                font-size: 25px;
+                padding: 0 15px;
+            }
+
+            .hide-settings {
+                display: none;
+            }
+        }
+
+    }
+
+    @keyframes mobileMenuAnimation {
+        from {
+            max-height: 0px;
+        }
+
+        to {
+            max-height: 300px;
+        }
+    }
+
+    @keyframes linksFont {
+        from {
+            font-size: 0px;
+        }
+
+        to {
+            font-size: 15px;
+        }
+    }
+
+    .mobile-menu {
+        display: none;
+
+        @include md {
+            display: flex;
+            font-size: 30px;
+            padding: 10px;
+        }
+
+        .menu-btn {
+            z-index: 200;
+        }
+
+        .hide-mobile-links {
+            display: none;
+        }
+
+        .mobile-links {
+            animation: mobileMenuAnimation 0.3s ease-in-out backwards;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            padding: 20px 0;
+            background-color: hsl(0, 0%, 0%, 0.1);
+            border-radius: 0 0 30px 30px;
+
+            a {
+                text-align: center;
+                color: #000;
+                text-decoration: none;
+
+                p {
+                    animation: linksFont 0.3s ease-in-out forwards;
+                    margin: 10px 0;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}
