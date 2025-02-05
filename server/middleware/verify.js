@@ -7,7 +7,7 @@ export const verify = (req, res, next) => {
     try {
 
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            return res.status(404).json({ message: "Not authrized" })
+            return res.status(404).json({ message: "Not authorized" })
         }
 
         const token = authHeader.split(" ")[1]
@@ -22,7 +22,7 @@ export const verify = (req, res, next) => {
         next()
 
     } catch (error) {
-        return res.json(500).json({ message: error.message })
+        return res.status(500).json({ message: error.message })
     }
 
 

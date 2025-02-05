@@ -1,16 +1,16 @@
 import express from "express"
 import { isAuthenticated, login, logout, register, resetPassword, sendPasswordResetOtp, sendVerifyOtp, verifyEmail } from "../controllers/authController.js"
-import userAuth from "../middleware/userAuth.js"
 import passport from "passport"
+import { verify } from "../middleware/verify.js"
 
 const router = express.Router()
 
 router.post("/register", register)
 router.post("/login", login)
 router.post("/logout", logout)
-router.post("/send-otp", userAuth, sendVerifyOtp)
-router.post("/verify-account", userAuth, verifyEmail)
-router.post("/authenticated", userAuth, isAuthenticated)
+router.post("/send-otp", verify, sendVerifyOtp)
+router.post("/verify-account", verify, verifyEmail)
+router.post("/authenticated", verify, isAuthenticated)
 router.post("/send-reset-otp", sendPasswordResetOtp)
 router.post("/reset-password", resetPassword)
 
