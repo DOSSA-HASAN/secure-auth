@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./login.scss"
 
 function Login() {
+
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
     return (
         <section className="login-section">
             <main className="login-main-container">
@@ -15,8 +19,8 @@ function Login() {
                 <form>
                     <h2>Login</h2>
                     <div className="inputs">
-                        <input type="email" name="email" id="email" placeholder='Email' required />
-                        <input type="password" name="password" id="password" placeholder='Password' required/>
+                        <input type="email" name="email" id="email" placeholder='Email' required onChange={(e) => setEmail(e.target.value)}/>
+                        <input type="password" name="password" id="password" placeholder='Password' required onChange={(e) => setPassword(e.target.value)}/>
                     </div>
 
                     <button type="submit">Login</button>
