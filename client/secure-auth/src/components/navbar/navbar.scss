@@ -9,11 +9,19 @@
 
         img {
             width: 60px;
+
+            @include sm{
+                width: 40px;
+            }
         }
 
         h1 {
             font-weight: 500;
             margin-left: 10px;
+
+            @include sm{
+                font-size: 18px;
+            }
         }
     }
 
@@ -22,7 +30,7 @@
         position: relative;
 
 
-        @include md {
+        @include tab {
             display: none;
         }
 
@@ -50,14 +58,16 @@
             border-left: 1px solid #0000008a;
             padding: 0 15px;
             position: relative;
-            width: 100px;
+            width: 50px;
             height: 30px;
             transition: all 0.3s ease-in-out;
+            @include flexCenter;
+            flex-direction: column;
 
             &.display-setting {
                 width: 250px;
-                height: 300px;
-                position: absolute;
+                border: none;
+                // height: 100vh;
             }
 
             i {
@@ -68,6 +78,25 @@
 
             .hide-settings {
                 display: none;
+            }
+
+            .settings{
+                bottom: 0;
+                position: absolute;
+                top: 30px;
+                height: 300px;
+                width: 250px;
+                @include flexCenter;
+                flex-direction: column;
+
+                a{
+                    font-weight: 600;
+                    background-color: rgb(214, 209, 209);
+                    border-radius: 10px;
+                    width: 100%;
+                    text-align: center;
+                    
+                }
             }
         }
 
@@ -96,7 +125,7 @@
     .mobile-menu {
         display: none;
 
-        @include md {
+        @include tab {
             display: flex;
             font-size: 30px;
             padding: 10px;
