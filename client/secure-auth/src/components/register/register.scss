@@ -1,22 +1,34 @@
 @import "../../responsive.scss";
 
+* {
+    // border: 1px solid;
+}
+
 .register-section {
     width: 100%;
-    height: 600px;
+    height: 500px;
     @include flexCenter;
-    z-index: 100;    
+    z-index: 100;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(3px);
+
+    @include tab {
+        height: 100vh;
+    }
 
     .register-main-container {
         @include flexBetween;
         width: 90%;
         height: 100%;
-        // padding: 0 50px;
         background-color: hsl(0, 0%, 100%, 0.5);
         position: relative;
         border-radius: 30px;
         box-shadow: 0 0 2px #000;
+
+        @include tab {
+            flex-direction: column;
+
+        }
 
         .left {
             height: 100%;
@@ -28,9 +40,21 @@
             color: #fff;
             position: relative;
 
+            @include tab {
+                width: 100%;
+                height: 100%;
+            }
+
+
             h1 {
                 font-size: 60px;
                 width: 70%;
+                z-index: 200;
+
+                @include tab {
+                    font-size: 40px;
+                    width: 90%;
+                }
             }
 
             p {
@@ -38,6 +62,10 @@
                 font-weight: 300;
                 width: 70%;
                 padding-top: 10px;
+
+                @include tab {
+                    width: 90%;
+                }
             }
 
             i {
@@ -46,6 +74,13 @@
                 bottom: 0;
                 right: 30px;
                 mix-blend-mode: soft-light;
+
+                @include tab{
+                    font-size: 150px;
+                    transform: rotate(90deg);
+                    bottom: 10px;
+                    right: 0;
+                }
             }
 
             .deco {
@@ -58,6 +93,7 @@
                 background-image: url("/deco-3-left.png");
                 background-size: contain;
                 background-repeat: no-repeat;
+                z-index: 0;
             }
 
         }
@@ -69,6 +105,12 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+
+
+            @include tab {
+                width: 100%;
+                height: 100%;
+            }
 
             h2 {
                 width: 90%;
@@ -109,11 +151,24 @@
 
                 &:hover {
                     background-color: #521bc8;
+
+                    &:disabled {
+                        cursor: not-allowed;
+                        background-color: hsl(259, 76%, 15%)
+                    }
                 }
+
+            }
+
+            .password-error {
+                @include flexCenter;
+                width: 90%;
+                color: red;
+                font-weight: 600;
             }
         }
 
-        .bg-deco{
+        .bg-deco {
             position: absolute;
             z-index: -100;
             right: -100px;
@@ -122,6 +177,10 @@
             background-image: url("/deco-2-left.png");
             background-size: contain;
             background-repeat: no-repeat;
+
+            @include tab {
+                top: 350px;
+            }
         }
 
     }
