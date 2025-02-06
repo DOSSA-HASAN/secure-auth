@@ -1,0 +1,166 @@
+@import "../../responsive.scss";
+
+.login-section {
+    width: 100%;
+    height: 500px;
+    @include flexCenter;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(3px);
+
+    @include tab {
+        height: 800px;
+    }
+
+    .login-main-container {
+        @include flexBetween;
+        width: 90%;
+        height: 100%;
+        background-color: hsl(0, 0%, 100%, 0.5);
+        position: relative;
+        border-radius: 30px;
+        box-shadow: 0 0 2px #000;
+
+        @include tab {
+            flex-direction: column;
+
+        }
+
+        .left {
+            height: 100%;
+            width: 50%;
+            border-radius: 30px;
+            background: linear-gradient(145deg, #F8BBD0, #7833F9, #00BCD4);
+            @include flexCenter;
+            flex-direction: column;
+            color: #fff;
+            position: relative;
+
+            @include tab {
+                width: 100%;
+                height: 100%;
+            }
+
+
+            h1 {
+                font-size: 60px;
+                width: 70%;
+                z-index: 200;
+
+                @include tab {
+                    font-size: 40px;
+                    width: 90%;
+                }
+            }
+
+            p {
+                font-size: 20px;
+                font-weight: 300;
+                width: 70%;
+                padding-top: 10px;
+
+                @include tab {
+                    width: 90%;
+                }
+            }
+
+            i {
+                position: absolute;
+                font-size: 250px;
+                bottom: 0;
+                right: 30px;
+                mix-blend-mode: soft-light;
+
+                @include tab{
+                    font-size: 150px;
+                    transform: rotate(90deg);
+                    bottom: 10px;
+                    right: 0;
+                }
+            }
+
+            .deco {
+                position: absolute;
+                top: -20px;
+                left: -40px;
+                z-index: 300;
+                width: 250px;
+                height: 250px;
+                background-image: url("/login-deco-left.png");
+                background-size: contain;
+                background-repeat: no-repeat;
+                z-index: 0;
+            }
+
+        }
+
+        form {
+            height: 100%;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+
+            @include tab {
+                width: 100%;
+                height: 100%;
+            }
+
+            h2 {
+                width: 90%;
+            }
+
+            .inputs{
+                width: 100%;
+                @include flexCenter;
+                flex-direction: column;
+                input {
+                    width: 90%;
+                    padding: 10px;
+                    border-radius: 10px;
+                    border: 1px solid hsl(0, 0, 0, 0.42);
+                    margin: 10px 0;
+    
+    
+    
+                    &:focus {
+                        outline: none;
+                        border: 1px solid #00BCD4;
+                    }
+                }
+            }
+
+            button {
+                padding: 10px;
+                border-radius: 20px;
+                width: 90%;
+                margin-top: 30px;
+                border: none;
+                color: #fff;
+                background-color: #651FFF;
+
+                &:hover {
+                    background-color: #521bc8;
+                }
+            }
+        }
+
+        .bg-deco {
+            position: absolute;
+            z-index: -100;
+            right: -100px;
+            width: 250px;
+            height: 250px;
+            background-image: url("/login-deco-right.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+
+            @include tab {
+                top: 350px;
+            }
+        }
+
+    }
+}
