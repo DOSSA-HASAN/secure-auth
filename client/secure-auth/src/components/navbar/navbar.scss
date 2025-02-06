@@ -88,6 +88,7 @@
                 width: 250px;
                 @include flexCenter;
                 flex-direction: column;
+                z-index: 300;
 
                 a{
                     font-weight: 600;
