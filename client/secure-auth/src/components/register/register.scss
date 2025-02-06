@@ -1,0 +1,128 @@
+@import "../../responsive.scss";
+
+.register-section {
+    width: 100%;
+    height: 600px;
+    @include flexCenter;
+    z-index: 100;    
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(3px);
+
+    .register-main-container {
+        @include flexBetween;
+        width: 90%;
+        height: 100%;
+        // padding: 0 50px;
+        background-color: hsl(0, 0%, 100%, 0.5);
+        position: relative;
+        border-radius: 30px;
+        box-shadow: 0 0 2px #000;
+
+        .left {
+            height: 100%;
+            width: 50%;
+            border-radius: 30px;
+            background: linear-gradient(145deg, #F8BBD0, #7833F9, #00BCD4);
+            @include flexCenter;
+            flex-direction: column;
+            color: #fff;
+            position: relative;
+
+            h1 {
+                font-size: 60px;
+                width: 70%;
+            }
+
+            p {
+                font-size: 20px;
+                font-weight: 300;
+                width: 70%;
+                padding-top: 10px;
+            }
+
+            i {
+                position: absolute;
+                font-size: 250px;
+                bottom: 0;
+                right: 30px;
+                mix-blend-mode: soft-light;
+            }
+
+            .deco {
+                position: absolute;
+                top: -20px;
+                left: -40px;
+                z-index: 300;
+                width: 250px;
+                height: 250px;
+                background-image: url("/deco-3-left.png");
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
+
+        }
+
+        form {
+            height: 100%;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            h2 {
+                width: 90%;
+            }
+
+            input {
+                width: 90%;
+                padding: 10px;
+                border-radius: 10px;
+                border: 1px solid hsl(0, 0, 0, 0.42);
+                margin: 10px 0;
+
+
+
+                &:focus {
+                    outline: none;
+                    border: 1px solid #00BCD4;
+                }
+            }
+
+            .passwords {
+                width: 90%;
+                @include flexBetween;
+
+                input {
+                    width: 45%;
+                }
+            }
+
+            button {
+                padding: 10px;
+                border-radius: 20px;
+                width: 90%;
+                margin-top: 30px;
+                border: none;
+                color: #fff;
+                background-color: #651FFF;
+
+                &:hover {
+                    background-color: #521bc8;
+                }
+            }
+        }
+
+        .bg-deco{
+            position: absolute;
+            z-index: -100;
+            right: -100px;
+            width: 250px;
+            height: 250px;
+            background-image: url("/deco-2-left.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+    }
+}
