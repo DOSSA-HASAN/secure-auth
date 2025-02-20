@@ -5,6 +5,7 @@ import Register from './components/register/Register'
 import Login from './components/login/Login'
 import VerifyEmail from './components/verifyEmail/VerifyEmail'
 import NotFound404 from './components/notFound/NotFound404'
+import Profile from './components/userProfile/Profile'
 
 function App() {
   return (
@@ -14,7 +15,8 @@ function App() {
           {/* <Register /> */}
           {/* <Login /> */}
           {/* <VerifyEmail /> */}
-          <NotFound404 />
+          {/* <NotFound404 /> */}
+          <Profile />
         <Routes>
         </Routes>
       </BrowserRouter>

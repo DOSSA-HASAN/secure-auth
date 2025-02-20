@@ -1,0 +1,32 @@
+@import "../../responsive.scss";
+
+.profile-section {
+    article {
+        height: 80vh;
+        @include flexCenter;
+        
+        text-align: center;
+        h1 {
+            color: transparent;
+            background: linear-gradient(#B2EBF2, #D1C4E9, #F8BBD0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            font-weight: 800;
+            font-size: 150px;
+        }
+    }
+
+    .bg-deco {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        z-index: -100;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+}
