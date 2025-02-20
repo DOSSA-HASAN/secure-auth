@@ -3,6 +3,7 @@ import Navbar from './components/navbar/Navbar'
 import { BrowserRouter, Routes } from 'react-router-dom'
 import Register from './components/register/Register'
 import Login from './components/login/Login'
+import VerifyEmail from './components/verifyEmail/VerifyEmail'
 
 function App() {
   return (
@@ -10,7 +11,8 @@ function App() {
       <BrowserRouter>
           <Navbar />
           {/* <Register /> */}
-          <Login />
+          {/* <Login /> */}
+          <VerifyEmail />
         <Routes>
         </Routes>
       </BrowserRouter>
