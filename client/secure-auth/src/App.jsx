@@ -6,6 +6,8 @@ import Login from './components/login/Login'
 import VerifyEmail from './components/verifyEmail/VerifyEmail'
 import NotFound404 from './components/notFound/NotFound404'
 import Profile from './components/userProfile/Profile'
+import PasswordOtp from './components/password/PasswordOtp'
+import ResetPassword from './components/password/ResetPassword'
 
 function App() {
   return (
@@ -16,7 +18,9 @@ function App() {
           {/* <Login /> */}
           {/* <VerifyEmail /> */}
           {/* <NotFound404 /> */}
-          <Profile />
+          {/* <Profile /> */}
+          {/* <PasswordOtp /> */}
+          <ResetPassword />
         <Routes>
         </Routes>
       </BrowserRouter>

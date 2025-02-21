@@ -1,6 +1,6 @@
 @import "../../responsive.scss";
 
-.verify-email-section {
+.verify-email-section, .reset-password-otp-section {
     @include flexCenter;
     flex-direction: column;
     height: 80vh;
