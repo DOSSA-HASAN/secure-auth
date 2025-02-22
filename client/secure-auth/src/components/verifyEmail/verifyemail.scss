@@ -1,9 +1,9 @@
 @import "../../responsive.scss";
 
-.verify-email-section, .reset-password-otp-section {
+.verify-email-section, .reset-password-otp-section{
     @include flexCenter;
     flex-direction: column;
-    height: 80vh;
+    height: 80vh;    
 
     .bg-deco {
         position: absolute;

@@ -20,8 +20,9 @@ function Navbar() {
                     <i onClick={() => setIsLinksOpen(!isLinksOpen)} className="fa-solid fa-gear"></i>
 
                     <article className={isLinksOpen ? 'settings' : 'hide-settings'}>
-                        <Link to={""}><p>RESET PASSWORD</p></Link>
-                        <Link to={""}><p>VERIFY ACCOUNT</p></Link>
+                        <Link to={"reset-user-password"}><p>RESET PASSWORD</p></Link>
+                        <Link to={"verify-user"}><p>VERIFY ACCOUNT</p></Link>
+                        <Link to={"login"}><p>LOGIN</p></Link>
                         <Link to={""}><p>LOGOUT</p></Link>
                         <Link to={""}><p>PROFILE</p></Link>
                     </article>
@@ -32,10 +33,10 @@ function Navbar() {
                     <i className="fa-solid fa-bars"></i>
                 </div>
                 <article className={isMenuOpen ? "mobile-links" : "hide-mobile-links"}>
-                    <Link to={""}><p>LOGIN</p></Link>
-                    <Link to={""}><p>REGISTER</p></Link>
-                    <Link to={""}><p>RESET PASSWORD</p></Link>
-                    <Link to={""}><p>VERIFY ACCOUNT</p></Link>
+                    <Link to={"login"}><p>LOGIN</p></Link>
+                    <Link to={"register"}><p>REGISTER</p></Link>
+                    <Link to={"reset-user-password"}><p>RESET PASSWORD</p></Link>
+                    <Link to={"verify-user"}><p>VERIFY ACCOUNT</p></Link>
                     <Link to={""}><p>LOGOUT</p></Link>
                     <Link to={""}><p>PROFILE</p></Link>
                 </article>
