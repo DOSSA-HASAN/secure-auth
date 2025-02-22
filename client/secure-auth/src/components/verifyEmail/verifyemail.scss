@@ -1,9 +1,10 @@
 @import "../../responsive.scss";
 
-.verify-email-section, .reset-password-otp-section{
+.verify-email-section,
+.reset-password-otp-section {
     @include flexCenter;
     flex-direction: column;
-    height: 80vh;    
+    height: 80vh;
 
     .bg-deco {
         position: absolute;
@@ -70,6 +71,19 @@
                     cursor: pointer;
                 }
             }
+        }
+    }
+
+    button {
+        background-color: #000;
+        border-radius: 999px;
+        border: none;
+        color: #fff;
+        padding: 15px;
+        margin: 30px 0;
+
+        &:hover {
+            background-color: #333232;
         }
     }
 

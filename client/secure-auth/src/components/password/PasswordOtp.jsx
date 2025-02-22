@@ -52,6 +52,7 @@ function PasswordOtp() {
                         />
                     ))}
                 </div>
+                <button>Submit OTP</button>
                 <div className="resend-email-cont">
                     <p>click <span onClick={handleResendOtp}>here</span> to resend the OTP if you havent already received one.</p>
                 </div>
