@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
 import "dotenv/config"
 
-const refresh = (req, res) => {
+export const refresh = (req, res) => {
     const rToken = req.cookies?.refreshToken
 
     try {

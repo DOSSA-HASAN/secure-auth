@@ -2,6 +2,7 @@ import express from "express"
 import { isAuthenticated, login, logout, register, resetPassword, sendPasswordResetOtp, sendVerifyOtp, verifyEmail } from "../controllers/authController.js"
 import passport from "passport"
 import { verify } from "../middleware/verify.js"
+import { refresh } from "../middleware/refresh.js"
 
 const router = express.Router()
 
@@ -13,6 +14,7 @@ router.post("/verify-account", verify, verifyEmail)
 router.post("/authenticated", verify, isAuthenticated)
 router.post("/send-reset-otp", sendPasswordResetOtp)
 router.post("/reset-password", resetPassword)
+router.post("/refresh", refresh)
 
 //google auth routes
 router.get('google', passport.authenticate('google', { scope: ['email', 'profile'] }))
