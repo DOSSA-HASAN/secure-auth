@@ -23,7 +23,7 @@ const register = async (req, res) => {
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
 
-        const user = userModel({
+        const user = new userModel({
             name,
             email,
             password: hashedPassword
@@ -113,7 +113,7 @@ const login = async (req, res) => {
             success: true,
             message: "logged in succesfully",
             accessToken,
-            user: { id: user._id, email: user.email, name: user.name }
+            user: { id: user._id, email: user.email, name: user.name, verifed: user.isAccountVerified }
         })
 
     } catch (error) {
@@ -128,7 +128,7 @@ const logout = (req, res) => {
 
 
     try {
-        if (!req?.cookies?.token) {
+        if (!req?.cookies?.refreshToken) {
             return res.status(401).json({ success: false, message: "no user was logged in" })
         }
         res.clearCookie("refreshToken", {
