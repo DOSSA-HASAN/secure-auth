@@ -13,6 +13,11 @@ function Login() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        alert("nnn")
+    }
+
     return (
 
         <motion.div
@@ -37,7 +42,7 @@ function Login() {
                             <input type="password" name="password" id="password" placeholder='Password' required onChange={(e) => setPassword(e.target.value)} />
                         </div>
 
-                        <button type="submit">Login</button>
+                        <button onClick={(e) => handleSubmit(e)}>Login</button>
                     </form>
                 </main>
             </section>
