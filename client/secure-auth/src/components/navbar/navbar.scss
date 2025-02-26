@@ -10,7 +10,7 @@
         img {
             width: 60px;
 
-            @include sm{
+            @include sm {
                 width: 40px;
             }
         }
@@ -19,7 +19,7 @@
             font-weight: 500;
             margin-left: 10px;
 
-            @include sm{
+            @include sm {
                 font-size: 18px;
             }
         }
@@ -80,7 +80,7 @@
                 display: none;
             }
 
-            .settings{
+            .settings {
                 bottom: 0;
                 position: absolute;
                 top: 30px;
@@ -90,14 +90,32 @@
                 flex-direction: column;
                 z-index: 300;
 
-                a{
+                a {
                     font-weight: 600;
                     background-color: rgb(214, 209, 209);
                     border-radius: 10px;
                     width: 100%;
                     text-align: center;
-                    
                 }
+
+                span{
+                    @include flexCenter;
+                    .circle {
+                        width: 80px;
+                        height: 50px;
+                        background-color: #000;
+                        border-radius: 50%;
+                        color: #fff;
+                        text-align: center;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: 700;
+                        font-size: 30px;
+                        text-transform: uppercase;
+                    }
+                }
+
             }
         }
 

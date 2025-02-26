@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import "./navbar.scss"
 import { Link } from "react-router-dom"
+import { ucontext } from '../../UserContext'
 
 function Navbar() {
 
+    // const { user } = useContext(ucontext)
+    const user = { username: "mo", isAccountVerified: true }
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isLinksOpen, setIsLinksOpen] = useState(false)
 
@@ -16,17 +19,23 @@ function Navbar() {
             <main className="links-cont">
                 <Link to={""}><p>LOGIN</p></Link>
                 <Link to={""} className='register-btn'><p>REGISTER</p></Link>
-                <figure className={ isLinksOpen ? 'account-setting display-setting' : 'account-setting'}>
-                    <i onClick={() => setIsLinksOpen(!isLinksOpen)} className="fa-solid fa-gear"></i>
+                {
+                    user &&
+                    <figure className={isLinksOpen ? 'account-setting display-setting' : 'account-setting'}>
+                        <i onClick={() => setIsLinksOpen(!isLinksOpen)} className="fa-solid fa-gear"></i>
 
-                    <article className={isLinksOpen ? 'settings' : 'hide-settings'}>
-                        <Link to={"reset-user-password"}><p>RESET PASSWORD</p></Link>
-                        <Link to={"verify-user"}><p>VERIFY ACCOUNT</p></Link>
-                        <Link to={"login"}><p>LOGIN</p></Link>
-                        <Link to={""}><p>LOGOUT</p></Link>
-                        <Link to={""}><p>PROFILE</p></Link>
-                    </article>
-                </figure>
+                        <article className={isLinksOpen ? 'settings' : 'hide-settings'}>
+                            <Link to={"reset-user-password"}><p>RESET PASSWORD</p></Link>
+                            {!user.isAccountVerified && <Link to={"verify-user"}><p>VERIFY ACCOUNT</p></Link>}
+                            <Link to={"login"}><p>LOGIN</p></Link>
+                            <Link to={""}><p>LOGOUT</p></Link>
+                            <span>
+                                <div className="circle">{user.username[0]}</div>
+                                <Link to={""}><p>PROFILE</p></Link>
+                            </span>
+                        </article>
+                    </figure>
+                }
             </main>
             <main className="mobile-menu">
                 <div className="menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -36,7 +45,7 @@ function Navbar() {
                     <Link to={"login"}><p>LOGIN</p></Link>
                     <Link to={"register"}><p>REGISTER</p></Link>
                     <Link to={"reset-user-password"}><p>RESET PASSWORD</p></Link>
-                    <Link to={"verify-user"}><p>VERIFY ACCOUNT</p></Link>
+                    {!user.isAccountVerified && <Link to={"verify-user"}><p>VERIFY ACCOUNT</p></Link>}
                     <Link to={""}><p>LOGOUT</p></Link>
                     <Link to={""}><p>PROFILE</p></Link>
                 </article>
