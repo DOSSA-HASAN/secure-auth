@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { motion } from 'framer-motion';
 import "./login.scss"
+import { ucontext } from '../../UserContext';
 
 function Login() {
+
+    const { login } = useContext(ucontext)
 
     const pageVariants = {
         initial: { opacity: 0, y: 20 },
@@ -15,7 +18,7 @@ function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        alert("nnn")
+        login(email, password)
     }
 
     return (
