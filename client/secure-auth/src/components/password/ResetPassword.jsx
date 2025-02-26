@@ -18,10 +18,6 @@ function ResetPassword() {
         }
     }
 
-    const handleSubmit = () => {
-        alert("hello world")
-    }
-
     useEffect(() => {
         validatePasswords()
     }, [newPassword, confirmPassword])
@@ -38,7 +34,7 @@ function ResetPassword() {
 
             <input type="password" name='new-pass' required placeholder='Enter New Password' onChange={(e) => setNewPassword(e.target.value)} />
             <input type="password" name='confirm-pass' required placeholder='Confirm New Password' onChange={(e) => setConfirmedPassword(e.target.value)} />
-            <button onClick={handleSubmit} disabled={!passwordsMatch} style={{ cursor: !passwordsMatch ? 'not-allowed' : 'pointer', backgroundColor: !passwordsMatch ? '#275927' : '#21c321', color: !passwordsMatch ? 'gray' : '#fff' }}>Save Changes</button>
+            {/* <button onClick={handleSubmit} disabled={!passwordsMatch} style={{ cursor: !passwordsMatch ? 'not-allowed' : 'pointer', backgroundColor: !passwordsMatch ? '#275927' : '#21c321', color: !passwordsMatch ? 'gray' : '#fff' }}>Save Changes</button> */}
             <p>You will be required to login again after changin your password</p>
         </section>
     )

@@ -1,6 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import "./verifyemail.scss"
+import { ucontext } from '../../UserContext'
+import { useNavigate } from 'react-router-dom'
 
 function VerifyEmail() {
 
@@ -10,8 +12,10 @@ function VerifyEmail() {
         exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
     }
 
+    const { user, requestVerificationOtp } = useContext(ucontext)
     const [otpValues, setOtpValues] = useState(new Array(6).fill(""))
     const inputRefs = useRef([])
+    const navigate = useNavigate()
 
     const handleOtpInput = (e, index) => {
         const value = e.target.value
@@ -38,7 +42,23 @@ function VerifyEmail() {
         }
     }
 
-    const handleResendOtp = () => { }
+    const handleResendOtp = (e) => {
+        e.preventDefault()
+        if (user.length !== 0) {
+            requestVerificationOtp(user.userId)
+        } else {
+            navigate('/')
+        }
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if(user.length !== 0){
+            verifyAccount(otpValues, user.userId)
+        } else {
+            navigate('/')
+        }
+    }
 
     return (
         <motion.div
@@ -66,7 +86,7 @@ function VerifyEmail() {
                             />
                         ))}
                     </div>
-                    <button>Submit OTP</button>
+                    <button onClick={handleSubmit}>Submit OTP</button>
                     <div className="resend-email-cont">
                         <p>click <span onClick={handleResendOtp}>here</span> to resend the email if you havent already received one.</p>
                     </div>

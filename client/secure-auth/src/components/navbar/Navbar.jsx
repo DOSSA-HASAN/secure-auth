@@ -5,8 +5,7 @@ import { ucontext } from '../../UserContext'
 
 function Navbar() {
 
-    // const { user } = useContext(ucontext)
-    const user = { username: "mo", isAccountVerified: true }
+    const { user, logout } = useContext(ucontext)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isLinksOpen, setIsLinksOpen] = useState(false)
 
@@ -18,21 +17,24 @@ function Navbar() {
             </figure>
             <main className="links-cont">
                 <Link to={""}><p>LOGIN</p></Link>
-                <Link to={""} className='register-btn'><p>REGISTER</p></Link>
+                <Link to={"/register"} className='register-btn'><p>REGISTER</p></Link>
                 {
-                    user &&
+                    user.length !== 0 &&
                     <figure className={isLinksOpen ? 'account-setting display-setting' : 'account-setting'}>
                         <i onClick={() => setIsLinksOpen(!isLinksOpen)} className="fa-solid fa-gear"></i>
 
                         <article className={isLinksOpen ? 'settings' : 'hide-settings'}>
                             <Link to={"reset-user-password"}><p>RESET PASSWORD</p></Link>
-                            {!user.isAccountVerified && <Link to={"verify-user"}><p>VERIFY ACCOUNT</p></Link>}
+                            {user.isAccountVerified !== true && <Link to={"verify-user"}><p>VERIFY ACCOUNT</p></Link>}
                             <Link to={"login"}><p>LOGIN</p></Link>
-                            <Link to={""}><p>LOGOUT</p></Link>
-                            <span>
-                                <div className="circle">{user.username[0]}</div>
-                                <Link to={""}><p>PROFILE</p></Link>
-                            </span>
+                            <Link to={""} onClick={logout}><p>LOGOUT</p></Link>
+                            {
+                                user?.name &&
+                                <span>
+                                    <div className="circle">{user?.name[0]}</div>
+                                    <Link to={""}><p>PROFILE</p></Link>
+                                </span>
+                            }
                         </article>
                     </figure>
                 }
@@ -45,9 +47,15 @@ function Navbar() {
                     <Link to={"login"}><p>LOGIN</p></Link>
                     <Link to={"register"}><p>REGISTER</p></Link>
                     <Link to={"reset-user-password"}><p>RESET PASSWORD</p></Link>
-                    {!user.isAccountVerified && <Link to={"verify-user"}><p>VERIFY ACCOUNT</p></Link>}
-                    <Link to={""}><p>LOGOUT</p></Link>
-                    <Link to={""}><p>PROFILE</p></Link>
+                    {user.isAccountVerified !== true && <Link to={"verify-user"}><p>VERIFY ACCOUNT</p></Link>}
+                    <Link to={""} onClick={logout}><p>LOGOUT</p></Link>
+                    {
+                        user?.name &&
+                        <span>
+                            <div className="circle">{user?.name[0]}</div>
+                            <Link to={""}><p>PROFILE</p></Link>
+                        </span>
+                    }
                 </article>
             </main>
         </nav>

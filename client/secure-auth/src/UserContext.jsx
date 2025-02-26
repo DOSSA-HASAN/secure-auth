@@ -6,8 +6,8 @@ const ucontext = createContext()
 function UserContext({ children }) {
 
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken") || null)
-    const [user, setUser] = useState(null)
-    const navigate = useNavigate();
+    const [user, setUser] = useState([])
+    // const navigate = useNavigate();
 
     const API_BASE_URL = "http://localhost:5000/api"
 
@@ -118,7 +118,7 @@ function UserContext({ children }) {
 
             if (data.status === 201) {
                 console.log("account registered")
-                navigate('/')
+                // navigate('/')
             }
 
         } catch (error) {
@@ -221,4 +221,4 @@ function UserContext({ children }) {
     )
 }
 
-export default UserContext
+export { UserContext, ucontext }

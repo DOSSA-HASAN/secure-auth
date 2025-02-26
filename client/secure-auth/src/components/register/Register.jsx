@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { motion } from 'framer-motion'
 import "./register.scss"
+import { ucontext } from '../../UserContext'
 
 function Register() {
 
@@ -10,6 +11,7 @@ function Register() {
         exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
     }
 
+    const { register } = useContext(ucontext)
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -32,6 +34,11 @@ function Register() {
         } else {
             setError("")
         }
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        register(name, email, password)
     }
 
     return (
@@ -61,7 +68,7 @@ function Register() {
                             <input type="password" name="password" id="password" placeholder='Password' onChange={setPass} />
                             <input type="password" name="confirm-password" id="confirm-password" placeholder='Confirm password' onChange={confirmPass} />
                         </div>
-                        <button type='submit' disabled={error !== ""}>CONTINUE</button>
+                        <button onClick={handleSubmit} type='submit' disabled={error !== ""}>CONTINUE</button>
                     </form>
                 </main>
             </section>

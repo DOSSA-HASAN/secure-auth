@@ -11,8 +11,6 @@ function Password() {
         exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
     }
 
-    const [otpSuccess, setOtpSucces] = useState(false)
-
     return (
         <motion.div
             variants={pageVariants}
@@ -21,9 +19,7 @@ function Password() {
             exit="exit"
         >
             <main>
-                {
-                    otpSuccess ? <ResetPassword /> : <PasswordOtp />
-                }
+                <PasswordOtp />
             </main>
         </motion.div>
     )
