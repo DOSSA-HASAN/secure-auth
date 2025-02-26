@@ -8,13 +8,16 @@ import Profile from './components/userProfile/Profile'
 import Layout from './Layout'
 import Password from './components/password/Password'
 import AnimatedRoutes from './animatedRoutes/AnimatedRoutes'
+import { UserContext } from './UserContext'
 
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <AnimatedRoutes />
-      </BrowserRouter>
+      <UserContext>
+        <BrowserRouter>
+          <AnimatedRoutes />
+        </BrowserRouter>
+      </UserContext>
     </>
   )
 }
