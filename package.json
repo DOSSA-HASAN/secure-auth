@@ -1,0 +1,21 @@
+{
+  "name": "project03",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix server && npm install --prefix secure-auth && npm run build --prefix secure-auth",
+    "start": "npm run start --prefix server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DOSSA-HASAN/secure-auth.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DOSSA-HASAN/secure-auth/issues"
+  },
+  "homepage": "https://github.com/DOSSA-HASAN/secure-auth#readme",
+  "description": ""
+}

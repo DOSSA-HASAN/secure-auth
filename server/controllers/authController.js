@@ -4,6 +4,7 @@ import genSalt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import "dotenv/config"
 import transporter from "../config/nodeMailer.js"
+import mongoose from "mongoose"
 
 const register = async (req, res) => {
     const { name, email, password } = req.body
@@ -97,9 +98,9 @@ const login = async (req, res) => {
         )
 
         const refreshToken = jwt.sign(
-            { id: user._id},
+            { id: user._id },
             process.env.REFRESH_SECRET,
-            { expiresIn: '7d'}
+            { expiresIn: '7d' }
         )
 
         res.cookie('refreshToken', refreshToken, {
@@ -125,8 +126,6 @@ const login = async (req, res) => {
 }
 
 const logout = (req, res) => {
-
-
     try {
         if (!req?.cookies?.refreshToken) {
             return res.status(401).json({ success: false, message: "no user was logged in" })
@@ -134,8 +133,7 @@ const logout = (req, res) => {
         res.clearCookie("refreshToken", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: process.env.NODE_ENV === "production" ? "strict" : "none",
-            path: "/"
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
         })
 
         return res.status(200).json({ success: true, message: "user logged out successfully" })
@@ -193,7 +191,7 @@ const verifyEmail = async (req, res) => {
     }
 
     try {
-        const user = await userModel.findById(userId)
+        const user = await userModel.findOne({ _id: userId })
 
         if (!user) {
             return res.status(404).json({ success: false, message: "user was not found" })
@@ -203,7 +201,7 @@ const verifyEmail = async (req, res) => {
             return res.status(200).json({ success: true, message: "account had already been verified" })
         }
 
-        if (user.verifyOtp = "" || otp !== user.verifyOtp) {
+        if (user.verifyOtp == "" || otp !== user.verifyOtp) {
             return res.status(400).json({ success: false, message: "OTP may be invalid, please try again" })
         }
 
@@ -220,6 +218,7 @@ const verifyEmail = async (req, res) => {
         return res.status(200).json({ success: true, message: "Account verified successfully" })
 
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ success: false, message: error.message })
     }
 }
@@ -272,6 +271,7 @@ const sendPasswordResetOtp = async (req, res) => {
 
 const resetPassword = async (req, res) => {
     const { email, otp, newPassword } = req.body
+    console.log(email + otp + newPassword)
 
     if (!email || !otp || !newPassword) {
         return res.status(400).json({ success: false, message: "missing required fields" })
@@ -282,28 +282,35 @@ const resetPassword = async (req, res) => {
         const user = await userModel.findOne({ email })
 
         if (!user) {
+            console.log("user " + user)
             return res.status(404).json({ success: false, message: "no user found" })
         }
 
         if (user.resetOtp == "" || user.resetOtpExpiredAt == 0) {
+            console.log("first if")
             return res.status(400).json({ success: false, message: "no reset otp was requested from this account" })
         }
 
-        if (otp !== user.resetOtp){
-            return res.status(400).json({ succes: false, message: "OTP is invalid, the otp provided does not match"})
+        if (otp !== user.resetOtp) {
+            console.log("second if")
+            return res.status(400).json({ succes: false, message: "OTP is invalid, the otp provided does not match" })
         }
 
         if (user.resetOtpExpiredAt < Date.now()) {
+            console.log("3rd if")
             return res.status(400).json({ succes: false, message: "password reset otp has expired, please request for a new oe" })
         }
 
+        console.log("outside if")
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(newPassword, salt)
 
+        console.log("Saving user")
         user.password = hashedPassword
         user.resetOtp = ""
         user.resetOtpExpiredAt = 0
         await user.save()
+        console.log("svaed user")
 
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
@@ -314,11 +321,31 @@ const resetPassword = async (req, res) => {
 
         await transporter.sendMail(mailOptions)
 
-        return res.status(200).json({ success: false, message: "Account password has been changed successfully"})
+        return res.status(200).json({ success: false, message: "Account password has been changed successfully" })
 
     } catch (error) {
         return res.json({ success: false, message: error.message })
     }
 }
 
-export { register, login, logout, sendVerifyOtp, verifyEmail, isAuthenticated, sendPasswordResetOtp, resetPassword }
+const getUserInfo = async (req, res) => {
+    const { userId } = req.params
+
+    try {
+        if (!userId) return res.status(400).json({ success: false, message: "User Id is missing" })
+
+        const user = await userModel.findById(userId)
+
+        if (!user) return res.status(404).json({ success: false, message: "No user found with the specified ID" })
+
+        res.status(200).json({
+            success: true,
+            user: { id: user._id, email: user.email, name: user.name, verifed: user.isAccountVerified }
+        })
+
+    } catch (error) {
+        res.status(500).json({ sucess: false, message: error.message })
+    }
+}
+
+export { register, login, logout, sendVerifyOtp, verifyEmail, isAuthenticated, sendPasswordResetOtp, resetPassword, getUserInfo }

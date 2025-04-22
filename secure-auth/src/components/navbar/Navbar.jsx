@@ -16,23 +16,23 @@ function Navbar() {
                 <h1>SECURE AUTH</h1>
             </figure>
             <main className="links-cont">
-                <Link to={""}><p>LOGIN</p></Link>
-                <Link to={"/register"} className='register-btn'><p>REGISTER</p></Link>
+                {!user?.id && <Link to={""}><p>LOGIN</p></Link>}
+                {!user?.id && <Link to={"/register"} className='register-btn'><p>REGISTER</p></Link>}
                 {
-                    user.length !== 0 &&
+                    user &&
                     <figure className={isLinksOpen ? 'account-setting display-setting' : 'account-setting'}>
                         <i onClick={() => setIsLinksOpen(!isLinksOpen)} className="fa-solid fa-gear"></i>
 
                         <article className={isLinksOpen ? 'settings' : 'hide-settings'}>
                             <Link to={"reset-user-password"}><p>RESET PASSWORD</p></Link>
                             {user.isAccountVerified !== true && <Link to={"verify-user"}><p>VERIFY ACCOUNT</p></Link>}
-                            <Link to={"login"}><p>LOGIN</p></Link>
+                            {user == null && <Link to={"login"}><p>LOGIN</p></Link>}
                             <Link to={""} onClick={logout}><p>LOGOUT</p></Link>
                             {
                                 user?.name &&
                                 <span>
                                     <div className="circle">{user?.name[0]}</div>
-                                    <Link to={""}><p>PROFILE</p></Link>
+                                    <Link to={"/profile"}><p>PROFILE</p></Link>
                                 </span>
                             }
                         </article>
@@ -47,13 +47,13 @@ function Navbar() {
                     <Link to={"login"}><p>LOGIN</p></Link>
                     <Link to={"register"}><p>REGISTER</p></Link>
                     <Link to={"reset-user-password"}><p>RESET PASSWORD</p></Link>
-                    {user.isAccountVerified !== true && <Link to={"verify-user"}><p>VERIFY ACCOUNT</p></Link>}
+                    {user?.isAccountVerified !== true && <Link to={"verify-user"}><p>VERIFY ACCOUNT</p></Link>}
                     <Link to={""} onClick={logout}><p>LOGOUT</p></Link>
                     {
                         user?.name &&
                         <span>
                             <div className="circle">{user?.name[0]}</div>
-                            <Link to={""}><p>PROFILE</p></Link>
+                            <Link to={"/profile"}><p>PROFILE</p></Link>
                         </span>
                     }
                 </article>

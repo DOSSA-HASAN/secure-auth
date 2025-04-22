@@ -1,5 +1,5 @@
 import express from "express"
-import { isAuthenticated, login, logout, register, resetPassword, sendPasswordResetOtp, sendVerifyOtp, verifyEmail } from "../controllers/authController.js"
+import { getUserInfo, isAuthenticated, login, logout, register, resetPassword, sendPasswordResetOtp, sendVerifyOtp, verifyEmail } from "../controllers/authController.js"
 import passport from "passport"
 import { verify } from "../middleware/verify.js"
 import { refresh } from "../middleware/refresh.js"
@@ -15,16 +15,6 @@ router.post("/authenticated", verify, isAuthenticated)
 router.post("/send-reset-otp", sendPasswordResetOtp)
 router.post("/reset-password", resetPassword)
 router.post("/refresh", refresh)
-
-//google auth routes
-router.get('google', passport.authenticate('google', { scope: ['email', 'profile'] }))
-
-//google callback redirect
-router.get('/google/callback',
-    passport.authenticate('google', { failureRedirect: '/' }),
-    (req, res) => {
-        res.redirect('/profile')
-    }
-)
+router.get('/user/:userId', getUserInfo)
 
 export default router

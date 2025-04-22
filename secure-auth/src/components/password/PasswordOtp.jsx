@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router-dom'
 
 function PasswordOtp() {
 
-    const { user, resetPassword } = useContext(ucontext)
+    const { user, resetPassword, requestPasswordResetOtp } = useContext(ucontext)
     const [otpValues, setOtpValues] = useState(new Array(6).fill(""))
     const inputRefs = useRef([])
     const [newPassword, setNewPassword] = useState("")
     const [confirmPassword, setConfirmedPassword] = useState("")
-    const [error, setError] = useState("")
+    const [error, setError] = useState(null)
     const [passwordsMatch, setPasswordsMatch] = useState()
     const navigate = useNavigate()
 
@@ -28,15 +28,18 @@ function PasswordOtp() {
         validatePasswords()
     }, [newPassword, confirmPassword])
 
+
     const handleOtpInput = (e, index) => {
         const value = e.target.value
-        if (/^[0-9]$/.test(value) || value == "") {
-            const newOtpvalue = [...otpValues]
-            newOtpvalue[index] = value
-            setOtpValues(newOtpvalue)
-
-            if (value !== "" && index < 6) {
-                inputRefs.current[index + 1].focus()
+        if (/^[0-9]$/.test(value) || value === "") {
+            setOtpValues((prevOtpValues) => {
+                const newOtpValues = [...prevOtpValues];
+                newOtpValues[index] = value;
+                return newOtpValues;
+            });
+    
+            if (value !== "" && index < otpValues.length - 1) {
+                inputRefs.current[index + 1]?.focus();
             }
         }
     }
@@ -54,16 +57,24 @@ function PasswordOtp() {
     }
 
     const handleResendOtp = () => {
-        if (user) {
-            requestPasswordResetOtp(user.email)
+        if (user?.id) {
+            setError(null)
+            requestPasswordResetOtp(user?.email)
         } else {
             navigate('/')
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         if (passwordsMatch) {
-            resetPassword(user.email, otpValues, newPassword)
+            setError(null)
+            const success = await resetPassword(user?.email, otpValues.join("").toString(), newPassword.toString())
+            if (success) {
+                setError(null)
+                navigate('/login')
+            } else {
+                setError("Invalid OTP, OTP may have expired or does not match, click below to generate a new otp")
+            }
         }
     }
 
@@ -78,9 +89,9 @@ function PasswordOtp() {
                         {otpValues.map((value, index) => (
                             <input
                                 key={index}
+                                value={value}
                                 type='number'
                                 className='box'
-                                value={value}
                                 onChange={(e) => handleOtpInput(e, index)}
                                 onKeyDown={(e) => handleKeyDown(e, index)}
                                 ref={(el) => inputRefs.current[index] = el}

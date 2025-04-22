@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { motion } from 'framer-motion';
 import "./login.scss"
 import { ucontext } from '../../UserContext';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
 
@@ -15,10 +16,14 @@ function Login() {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const navigate = useNavigate()
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        login(email, password)
+        const success = await login(email, password)
+        if(success){
+            navigate('/profile')
+        }
     }
 
     return (

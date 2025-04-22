@@ -18,9 +18,9 @@ function Password() {
             animate="animate"
             exit="exit"
         >
-            <main>
+            {/* <main> */}
                 <PasswordOtp />
-            </main>
+            {/* </main> */}
         </motion.div>
     )
 }

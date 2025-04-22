@@ -12,8 +12,9 @@ function VerifyEmail() {
         exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
     }
 
-    const { user, requestVerificationOtp } = useContext(ucontext)
-    const [otpValues, setOtpValues] = useState(new Array(6).fill(""))
+    const { user, requestVerificationOtp, verifyAccount } = useContext(ucontext)
+    const [otpValues, setOtpValues] = useState(new Array(5).fill(""))
+    const [error, setError] = useState("");
     const inputRefs = useRef([])
     const navigate = useNavigate()
 
@@ -44,19 +45,31 @@ function VerifyEmail() {
 
     const handleResendOtp = (e) => {
         e.preventDefault()
+        setError("")
         if (user.length !== 0) {
-            requestVerificationOtp(user.userId)
+            requestVerificationOtp(user.id)
         } else {
             navigate('/')
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        if(user.length !== 0){
-            verifyAccount(otpValues, user.userId)
+        if (user.isAccountVerified == false) {
+            const otpString = otpValues.join("")
+            const otpNumber = Number(otpString)
+            const success = await verifyAccount(user?.id, otpNumber.toString())
+
+            if (success) {
+                setError("")
+                console.log("account verified")
+                navigate('/profile')
+            } else {
+                console.log("otp may have expired")
+                setError("OTP may have expired or does not match, click the link below to generate a new OTP code")
+            }
         } else {
-            navigate('/')
+            navigate('/profile')
         }
     }
 
@@ -71,6 +84,12 @@ function VerifyEmail() {
                 <div className="bg-deco">
                     <img src="/bg-gradient-deco.png" alt="" />
                 </div>
+                {
+                    error !== "" &&
+                    <div className="error">
+                        <p>{error}</p>
+                    </div>
+                }
                 <main className='main-verify-cont'>
                     <div className="input-cont">
                         {otpValues.map((value, index) => (

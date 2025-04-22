@@ -19,6 +19,14 @@
         }
     }
 
+    .error{
+        padding: 15px;
+        border: 1px solid red;
+        background-color: hsl(0, 100%, 50%, 0.3);
+        border-radius: 15px;
+        margin-bottom: 15px
+    }
+
     .main-verify-cont {
         @include flexCenter;
         flex-direction: column;
@@ -29,6 +37,7 @@
             width: 100%;
 
             .box {
+                color: #000;
                 width: 60px;
                 height: 60px;
                 border: 1px solid;
@@ -39,7 +48,7 @@
                 font-size: 20px;
                 font-weight: 700;
                 margin-bottom: 10px;
-
+                
                 @include tab {
                     width: 50px;
                     height: 50px;

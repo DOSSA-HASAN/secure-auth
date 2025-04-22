@@ -1,5 +1,5 @@
 // define base url
-const API_BASE_URL = "http://localhost:5000/api"
+const API_BASE_URL = import.meta.env.MODE === "production" ? "http://localhost:5000/api" : '/'
 
 export const fetchWithRefresh = async (url, options = {}) => {
     //initial api request

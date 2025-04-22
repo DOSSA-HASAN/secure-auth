@@ -1,5 +1,4 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 const ucontext = createContext()
 
@@ -7,9 +6,8 @@ function UserContext({ children }) {
 
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken") || null)
     const [user, setUser] = useState([])
-    // const navigate = useNavigate();
 
-    const API_BASE_URL = "http://localhost:5000/api"
+    const API_BASE_URL = import.meta.env.MODE === "production" ? "http://localhost:5000" : '/'
 
     const fetchAccessTokenWithRefresh = async (url, options = {}) => {
         //initial api request
@@ -47,7 +45,7 @@ function UserContext({ children }) {
 
     const refreshAccessToken = async () => {
         try {
-            let response = await fetch(`${API_BASE_URL}/api/auth/`, {
+            let response = await fetch(`${API_BASE_URL}/api/auth/refresh`, {
                 method: "POST",
                 credentials: "include"
             })
@@ -69,16 +67,21 @@ function UserContext({ children }) {
             let response = await fetch(`${API_BASE_URL}/api/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                credentials: 'include',
                 body: JSON.stringify({ email, password })
             })
 
             let data = await response.json()
 
-            if (data) {
+            if (data !== null) {
                 setAccessToken(data.accessToken)
                 localStorage.setItem("accessToken", data.accessToken)
+                localStorage.setItem("user", JSON.stringify(data.user))
                 setUser(data.user)
+                return true;
             }
+
+            return false;
 
         } catch (error) {
             console.error(error.message)
@@ -86,19 +89,28 @@ function UserContext({ children }) {
     }
 
     const logout = async () => {
+
+        const accessToken = JSON.stringify(localStorage.getItem("accessToken"))
+
+        if (!accessToken) {
+            console.error("No refresh cookie found")
+        }
+
         try {
             let response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
                 method: "POST",
-                credentials: "include"
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                credentials: "include",
             })
 
             const data = await response.json()
 
             if (data.success) {
-                setUser(null)
+                setUser([])
                 setAccessToken(null)
                 localStorage.clear()
-                window.location.href = "/login"
             }
 
         } catch (error) {
@@ -116,30 +128,40 @@ function UserContext({ children }) {
 
             const data = await response.json()
 
-            if (data.status === 201) {
+            if (data.success) {
                 console.log("account registered")
-                // navigate('/')
+                return true;
             }
+
+            return false;
 
         } catch (error) {
             console.error(error.message)
         }
     }
 
-    const verifyAccount = async (otp, userId) => {
+    const verifyAccount = async (userId, otp) => {
         try {
+            console.log(typeof(otp))
+            console.log(typeof(userId))
             let response = await fetch(`${API_BASE_URL}/api/auth/verify-account`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                },
                 body: JSON.stringify({ userId, otp })
             })
 
-            const data = await response.json()
-
-            if (data.status === 200) {
-                console.log("account already verified")
-            } else if (data.status === 400) {
-                console.log("OTP has expired")
+            if (response.ok) {
+                console.log("Account verified successfully");
+                getUserData();
+                return true;
+            } else if (response.status === 400) {
+                console.log("OTP has expired");
+            } else {
+                console.log(response)
+                console.log("Something went wrong");
             }
 
         } catch (error) {
@@ -148,17 +170,21 @@ function UserContext({ children }) {
     }
 
     const requestVerificationOtp = async (userId) => {
+
         try {
             let response = await fetch(`${API_BASE_URL}/api/auth/send-otp`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                Authorization: `Bearer ${accessToken}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+                },
+                credentials: 'include',
                 body: JSON.stringify({ userId })
             })
 
             const data = await response.json()
 
-            if (data.status === 200) {
+            if (data.status == 200) {
                 console.log("otp has been sent to user_email")
             }
         } catch (error) {
@@ -195,11 +221,13 @@ function UserContext({ children }) {
 
             const data = await response.json()
 
-            if (data.status === 200) {
+            if (response.ok) {
                 console.log("account password has been changed")
                 logout()
-                navigate('/')
+                return true;
             }
+
+            return false;
 
         } catch (error) {
             console.error(error.message)
@@ -212,7 +240,31 @@ function UserContext({ children }) {
         }, 10 * 60 * 1000);
 
         return () => clearInterval(interval)
+    }, [accessToken])
+
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem("user"))
+        if (storedUser) {
+            setUser(storedUser)
+        }
     }, [])
+
+    const getUserData = async () => {
+        const response = await fetch(`${API_BASE_URL}/api/auth/user/${user?.id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        const data = await response.json()
+
+        if (data) {
+            setUser(data.user)
+            console.log(user)
+            localStorage.setItem("user", JSON.stringify(data.user))
+        }
+    }
 
     return (
         <ucontext.Provider value={{ fetchAccessTokenWithRefresh, register, login, logout, verifyAccount, requestPasswordResetOtp, resetPassword, requestVerificationOtp, accessToken, user }}>

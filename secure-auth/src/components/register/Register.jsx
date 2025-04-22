@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { motion } from 'framer-motion'
 import "./register.scss"
 import { ucontext } from '../../UserContext'
+import { useNavigate } from 'react-router-dom'
 
 function Register() {
 
@@ -17,6 +18,7 @@ function Register() {
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [error, setError] = useState("")
+    const navigate = useNavigate()
 
     const setPass = (e) => {
         setPassword(e.target.value)
@@ -36,9 +38,17 @@ function Register() {
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
+        setError("")
         e.preventDefault()
-        register(name, email, password)
+        try {
+            const success = await register(name, email, password)
+            if (success) {
+                navigate('/')
+            }
+        } catch (error) {
+            setError(error.message)
+        }
     }
 
     return (
